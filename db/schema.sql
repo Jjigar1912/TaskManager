@@ -458,6 +458,14 @@ ALTER TABLE ONLY public."userRole"
 
 
 --
+-- Name: user user_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."user"
+    ADD CONSTRAINT user_email_key UNIQUE (email);
+
+
+--
 -- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 

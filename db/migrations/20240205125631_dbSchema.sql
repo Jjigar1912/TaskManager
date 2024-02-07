@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "user"
 (
     "id" uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4 () , 
     "userName" VARCHAR(50) NOT NULL , 
-    "email" VARCHAR(70) NOT NULL , 
+    "email" VARCHAR(70) NOT NULL UNIQUE, 
     "contact" VARCHAR(10) NOT NULL , 
     "password" VARCHAR NOT NULL , 
     "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP   
@@ -111,6 +111,11 @@ INSERT INTO "userRole"(name,code) VALUES('DEVELOPER','role_developer') on CONFLI
 INSERT INTO "userRole"(name,code) VALUES('TL','role_tl') on CONFLICT(code) DO NOTHING ;
 
 
+INSERT INTO "user"("userName","email","contact","password") VALUES('Jigar','khalasjigar0861@gmail.com','8980168340','Jig@r1234') ON CONFLICT(email) DO NOTHING ;
+
+INSERT INTO "user"("userName","email","contact","password") VALUES('Tirth Jain','tirth@gmail.com','8980168341','Jig@r1234') ON CONFLICT(email) DO NOTHING ;
+
+INSERT INTO "user"("userName","email","contact","password") VALUES('Mayur Jadeja','mayur@gmail.com','8980168440','Jig@r1234') ON CONFLICT(email) DO NOTHING ;
 
 -- migrate:down
 
