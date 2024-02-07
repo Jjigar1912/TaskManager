@@ -30,20 +30,42 @@ class User {
 		return result.rows[0];
 	}
 
+	/**
+	 * 
+	 * @description This is used to get details of user by email . 
+	 * @param {Object} client represent a pg client object
+	 * @param {String} email represent a email of user 
+	 * @returns { Object } Returns an object of user specified in email .
+	 */
 	static async getDetailsByEmail(client,email){
 		const query = 'SELECT * FROM "user" WHERE "email" = $1';
 		const result = await client.query(query,[email]);
-		console.log(result.rows);
 		return result.rows[0];
 	}
 
+
+	/**
+	 * 
+	 * @description This is used to get role id of the user . 
+	 * @param {Object} client represent a pg client object 
+	 * @param {String} role represent a role 
+	 * @returns { Object } Returns an object of role includes id , name , code . 
+	 */
 	static async getRoleId(client,role){
 		const query = 'SELECT id from "userRole" WHERE "name" = $1';
 		const result = await client.query(query,[role.toUpperCase()]);
-		console.log(result.rows);
 		return result.rows[0];
 	}
 
+
+	/**
+	 * 
+	 * @description This is used to map user and it's role . 
+	 * @param {Object} client represent a pg client object 
+	 * @param {Serial} role_id represent a role id 
+	 * @param {uuid} user_id represent a user id 
+	 * @returns { Object } Returns an newly inserted object .  
+	 */
 	static async insertInUserRole(client,role_id,user_id){
 		const query = 'INSERT INTO "user_role"("user_id","role_id") VALUES($1,$2)';
 		const result = await client.query(query,[user_id,role_id]);
