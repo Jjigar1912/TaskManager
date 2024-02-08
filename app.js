@@ -6,12 +6,15 @@
 
 import express from 'express' ; 
 import allRoutes from './src/modules/index.js';
+import cookieParser from 'cookie-parser';
+
 
 // Create an instance of the Express Application . 
 const app = express() ; 
 
 // Middleware to parse incoming json request . 
 app.use(express.json());
+app.use(cookieParser());
 
 // combines all routes 
 app.use('/',allRoutes);

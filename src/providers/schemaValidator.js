@@ -4,6 +4,8 @@
  */
 import { HTTP_RESPONSES } from '../../constants/constant.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'; 
+import envConfig from '../../env.js';
 
 const validateSchema = (schema) => (req,res,next) => {
     
@@ -65,9 +67,31 @@ const hashPassword = async (req,res,next) => {
 	}
 };
 
+const storeAdminId = async (req,res,next)=>{
+
+	if(req.cookies.token){
+
+		try{
+		
+			const data = await jwt.verify(req.cookies.token,envConfig.JWT_KEY);
+		
+		}catch(error){
+
+			if(error instanceof jwt.TokenExpiredError){
+
+				return res.status(400).json(error);
+				
+			}
+		}
+	
+	}
+
+}
+
 export {
 	validateSchema , 
-	hashPassword	
+	hashPassword , 
+	storeAdminId 	
 };
 
 

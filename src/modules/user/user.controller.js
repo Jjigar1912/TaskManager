@@ -2,6 +2,16 @@ import UserService from './user.service.js';
 import { HTTP_RESPONSES } from '../../../constants/constant.js';
 
 /**
+ * 
+ * @typedef { Object } response 
+ * @property { String } status represents a status code for example 200  , 500 etc . 
+ * @property { String } message represents a message for example Success , Internal Server Error
+ * @property { data } data represent a data for example "User Details Got Successfully"
+ * @property { Array<Object> } userDetails represent an array of Object Of USER Data . 
+ * 
+ */
+
+/**
  * Class to handle all user related task - login , logout , register
  */
 class UserController
@@ -54,7 +64,9 @@ class UserController
                
 			// return data stored in response which contains status , userdetails 
 			const response = await UserService.loginService(req.body.email,req.body.password);
-               
+            
+			res.cookie('token',response.userDetails.access_token, { maxAge: 60 * 60 * 1000 , httpOnly: true });
+  
 			// sends success if it is valid user 
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 	
@@ -68,10 +80,133 @@ class UserController
 			}
 			
 			// send status code 500 if there is any server related error . 
-			return res.status(500).json(e);
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		
 		}
 	
+	}
+
+	/**
+	 * 
+	 * @description This will return user data either by role or all user data . 
+	 * @param {Object} req Express Request Object
+	 * @param {Object} res Express Response Object
+	 * @returns { Object } RESPONSE 
+	 */
+	static async displayUser(req,res){
+
+		try{
+
+			// response is initialized with null . 
+			let response = null ; 
+
+			if(!req.query.role){
+				
+				/**
+				 * 
+				 * @type { response }
+				 */
+				response = await UserService.displayUserService();
+			
+			}else{
+
+				/**
+				 * 
+				 * @type { response }
+				 */
+				response = await UserService.displayUserService(req.query.role);
+
+			}
+
+			// sends 200 code if any error is not encountered. 
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+
+		}catch(e){
+
+			// sends 500 code if any error occurs . 
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+		
+		}
+
+	}
+
+	/**
+	 * 
+	 * @static 
+	 * @async
+	 * @description Delete a record from User table 
+	 * @param {Object} req represents a express request object 
+	 * @param {Object} res represents a express response object  
+	 * 
+	 */
+	static async deleteUser(req,res){
+
+		try{
+
+			/**
+			 * @type { Object } response 
+			 */
+			// stored return value of deleteUserService in response 
+			const response = await UserService.deleteUserService(req.params.id);
+
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response); 
+			
+		}catch(e){
+
+			// sends 500 code if any error occurs . 
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+
+		}
+	}
+
+	
+	static async updateUser(req,res){
+
+		try{
+			
+			const response = await UserService.updateUserService(req.params.id,req.body);
+			
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+
+		}catch(e){
+
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+			
+		}
+	}
+
+	
+	static async getAllTeamLead(req,res){
+		
+		try{
+
+			const response = await UserService.getTL();
+
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+
+		}catch(e){
+
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+		
+		}
+	
+	}
+
+
+	static async getAllDeveloper(req,res){
+
+		try{
+
+			const response = await UserService.getDeveloper() ; 
+
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+
+		}catch(e){
+
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+
+		}
+
 	}
 
 

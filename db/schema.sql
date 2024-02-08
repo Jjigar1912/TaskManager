@@ -442,6 +442,30 @@ ALTER TABLE ONLY public.teams
 
 
 --
+-- Name: teams unique_team_name; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT unique_team_name UNIQUE (name);
+
+
+--
+-- Name: teams unique_tl; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT unique_tl UNIQUE (tl_id);
+
+
+--
+-- Name: team_user unique_tl_user; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.team_user
+    ADD CONSTRAINT unique_tl_user UNIQUE (user_id, team_id);
+
+
+--
 -- Name: userRole userRole_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -603,4 +627,5 @@ ALTER TABLE ONLY public.user_role
 --
 
 INSERT INTO public.schema_migrations (version) VALUES
-    ('20240205125631');
+    ('20240205125631'),
+    ('20240208114733');

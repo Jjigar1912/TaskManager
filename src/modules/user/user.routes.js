@@ -9,4 +9,13 @@ router.post('/register',validateSchema(userSchema),hashPassword,UserController.r
 
 router.post('/login',validateSchema(loginSchema),UserController.loginUser);
 
+router.get('/view',UserController.displayUser);
+
+router.delete('/delete/:id',UserController.deleteUser);
+
+router.put('/update/:id',UserController.updateUser);
+
+router.get('/get/tl',UserController.getAllTeamLead);
+
+router.get('/get/developer',UserController.getAllDeveloper);
 export default router ; 
