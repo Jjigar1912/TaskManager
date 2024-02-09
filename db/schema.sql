@@ -442,6 +442,14 @@ ALTER TABLE ONLY public.teams
 
 
 --
+-- Name: project unique_project_name; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project
+    ADD CONSTRAINT unique_project_name UNIQUE (title);
+
+
+--
 -- Name: teams unique_team_name; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -628,4 +636,5 @@ ALTER TABLE ONLY public.user_role
 
 INSERT INTO public.schema_migrations (version) VALUES
     ('20240205125631'),
-    ('20240208114733');
+    ('20240208114733'),
+    ('20240209115442');

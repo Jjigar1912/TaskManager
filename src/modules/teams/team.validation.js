@@ -8,4 +8,11 @@ const teamSchema = Joi.object({
 
 });
 
-export { teamSchema } ; 
+const addTeamMember = Joi.object({
+
+	users : Joi.array().items(Joi.string()).required() ,
+	team_id : Joi.string().trim().required() 
+	
+});
+
+export { teamSchema , addTeamMember } ; 
