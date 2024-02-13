@@ -197,8 +197,15 @@ class User {
 	}
 
 
+	/**
+	 * 
+	 * @param {Object} client represent a pg client object 
+	 * @returns { Array<Object> } Returns an array of object of TL whose role is TL 
+	 */
 	static async getTL(client){
 
+
+		// query for getting user whose role is TL 
 		const query = ` SELECT * FROM "user" 
 							INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
 							WHERE "user_role"."role_id" = 3 
@@ -210,8 +217,16 @@ class User {
 
 	}
 
+
+	/**
+	 * 
+	 * @param {Object} client Represent a pg client object  
+	 * @returns { Array<Object> } Returns an array of object of user whose role is developer 
+	 */
 	static async getDeveloper(client){
 
+
+		// query for getting all users whose role is developer
 		const query = ` SELECT * FROM "user" 
 							INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
 							WHERE "user_role"."role_id" = 2 
@@ -221,6 +236,24 @@ class User {
 		
 		return result.rows ; 
 
+	}
+
+
+	/**
+	 * 
+	 * @description This is used to get role name based on specific user id 
+	 * @param {Object} client represent a pg client object
+	 * @param {uuid} userId  represent a user id
+	 * @returns 
+	 */
+	static async getRoleName(client,userId){
+
+		// query for getting role name based on user id 
+		const query = 'SELECT "name" FROM "userRole" WHERE "id" =  ( SELECT "role_id" FROM "user_role" WHERE "user_id" = $1 ) ';
+
+		const result = await client.query(query,[userId]); 
+
+		return result.rows[0];
 	}
 
 	

@@ -9,6 +9,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import envConfig from '../../../env.js';
 
+
 class UserService {
 
 	/**
@@ -29,11 +30,22 @@ class UserService {
 
 			if (!ans) {
 	
-				const response = await User.createUser(client, data);
+				const result = await User.createUser(client, data);
 	
 				const role = await User.getRoleId(client,data.role);
 	
-				await User.insertInUserRole(client,role.id,response.id);
+				await User.insertInUserRole(client,role.id,result.id);
+
+
+
+				const response = {
+
+					status : HTTP_RESPONSES.CREATED.statusCode , 
+					message : HTTP_RESPONSES.CREATED.message , 
+					userDetails : result
+				};
+
+				console.log(response);
 	
 				return response;
 	
@@ -52,6 +64,7 @@ class UserService {
 		
 		}catch(e){
 
+			console.log(e);
 			throw e ; 
 		
 		}
@@ -83,10 +96,13 @@ class UserService {
 
 					const { password , ...remaining } = ans ; 
 
+					const role = await User.getRoleName(client,remaining.id); 
+
+					remaining['role'] = role.name ; 
+
 					const access_token = await jwt.sign(remaining,envConfig.JWT_KEY,{ expiresIn : '1h'});
 
 					Object.assign(remaining,{access_token});
-					
 
 					const response = {
 						
@@ -128,6 +144,8 @@ class UserService {
 			}
 
 		}catch(e){
+
+			console.log(e);
 
 			throw e ; 
 

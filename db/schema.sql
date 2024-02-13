@@ -184,8 +184,12 @@ CREATE TABLE public.project (
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     is_deleted boolean DEFAULT false,
     status public.status NOT NULL,
-    end_date timestamp without time zone NOT NULL,
-    team_id uuid NOT NULL
+    team_id uuid NOT NULL,
+    start_date date NOT NULL,
+    expected_end_date date NOT NULL,
+    actual_start_date date,
+    actual_end_date date,
+    admin_id uuid NOT NULL
 );
 
 
@@ -206,14 +210,16 @@ CREATE TABLE public.task (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     title character varying NOT NULL,
     description text NOT NULL,
-    priority public.priority NOT NULL,
     task_status public.task_status NOT NULL,
     assigned_at date NOT NULL,
     due_date date NOT NULL,
     completed_date date NOT NULL,
     project_id uuid NOT NULL,
-    "assignToId" integer NOT NULL,
-    "taskOwnerId" integer NOT NULL
+    category jsonb,
+    created_date date DEFAULT CURRENT_DATE,
+    "assignToId" uuid NOT NULL,
+    "taskOwnerId" uuid NOT NULL,
+    is_deleted boolean DEFAULT false
 );
 
 
@@ -554,27 +560,11 @@ ALTER TABLE ONLY public.project
 
 
 --
--- Name: task task_assignToId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.task
-    ADD CONSTRAINT "task_assignToId_fkey" FOREIGN KEY ("assignToId") REFERENCES public.user_role(id);
-
-
---
 -- Name: task task_project_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.task
     ADD CONSTRAINT task_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.project(id);
-
-
---
--- Name: task task_taskOwnerId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.task
-    ADD CONSTRAINT "task_taskOwnerId_fkey" FOREIGN KEY ("taskOwnerId") REFERENCES public.user_role(id);
 
 
 --
@@ -637,4 +627,6 @@ ALTER TABLE ONLY public.user_role
 INSERT INTO public.schema_migrations (version) VALUES
     ('20240205125631'),
     ('20240208114733'),
-    ('20240209115442');
+    ('20240209115442'),
+    ('20240213055226'),
+    ('20240213102612');

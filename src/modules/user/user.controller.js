@@ -159,22 +159,36 @@ class UserController
 		}
 	}
 
-	
+	/**
+	 * 
+	 * @static
+	 * @async
+	 * @param {Object} req Express Request Object 
+	 * @param {Object} res Express Response Object
+	 * @description This is used to update user information
+	 * @returns 
+	 */
 	static async updateUser(req,res){
 
 		try{
 			
+			/**
+			 * @type { Object } response 
+			 */
+			// stored return value of updateUserService in response 
 			const response = await UserService.updateUserService(req.params.id,req.body);
 			
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 
 		}catch(e){
 
+			// sends 500 code if any error occurs . 
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 			
 		}
 	}
 
+	
 	
 	static async getAllTeamLead(req,res){
 		

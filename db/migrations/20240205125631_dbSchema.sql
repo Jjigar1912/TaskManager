@@ -67,7 +67,6 @@ CREATE TABLE IF NOT EXISTS "task"
     "id" uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4() , 
     "title" VARCHAR NOT NULL , 
     "description" TEXT NOT NULL , 
-    "priority" Priority NOT NULL , 
     "task_status" Task_Status NOT NULL ,
     "assigned_at" DATE NOT NULL , 
     "due_date" DATE NOT NULL , 
