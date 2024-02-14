@@ -144,32 +144,12 @@ ALTER SEQUENCE public.category_id_seq OWNED BY public.category.id;
 --
 
 CREATE TABLE public.comment (
-    id integer NOT NULL,
     message text NOT NULL,
     task_id uuid NOT NULL,
     user_id uuid NOT NULL,
-    "createAt" timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+    "createAt" timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL
 );
-
-
---
--- Name: comment_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.comment_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: comment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.comment_id_seq OWNED BY public.comment.id;
 
 
 --
@@ -356,13 +336,6 @@ ALTER TABLE ONLY public.category ALTER COLUMN id SET DEFAULT nextval('public.cat
 
 
 --
--- Name: comment id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.comment ALTER COLUMN id SET DEFAULT nextval('public.comment_id_seq'::regclass);
-
-
---
 -- Name: team_user id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -397,14 +370,6 @@ ALTER TABLE ONLY public."TaskActivityLog"
 
 ALTER TABLE ONLY public.category
     ADD CONSTRAINT category_pkey PRIMARY KEY (id);
-
-
---
--- Name: comment comment_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.comment
-    ADD CONSTRAINT comment_pkey PRIMARY KEY (id);
 
 
 --
@@ -629,4 +594,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20240208114733'),
     ('20240209115442'),
     ('20240213055226'),
-    ('20240213102612');
+    ('20240213102612'),
+    ('20240214090727');

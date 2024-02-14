@@ -96,7 +96,7 @@ class User {
 						"userRole"."name" AS "role"
 						FROM "user" 
 						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
-						INNER JOIN "userRole" ON "userRole"."id" = "user_role"."role_id" ` ;
+						INNER JOIN "userRole" ON "userRole"."id" = "user_role"."role_id" ORDER BY "userRole"."name" ` ;
 
 			result = await client.query(query);
 
@@ -112,7 +112,7 @@ class User {
 						FROM "user" 
 						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
 						INNER JOIN "userRole" ON "userRole"."id" = "user_role"."role_id" 
-						WHERE "userRole"."name" = $1` ;
+						WHERE "userRole"."name" = $1 ORDER BY "userRole"."name"` ;
 
 			result = await client.query(query,[role.toUpperCase()]);
 
@@ -206,10 +206,15 @@ class User {
 
 
 		// query for getting user whose role is TL 
-		const query = ` SELECT * FROM "user" 
-							INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
-							WHERE "user_role"."role_id" = 3 
-							AND "user"."id" NOT IN (SELECT "tl_id" FROM "teams" ) `;
+		const query = ` SELECT 
+							"user"."id",
+							"user"."userName" , 
+							"user"."email" , 
+							"user"."contact"
+						FROM "user" 
+						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
+						WHERE "user_role"."role_id" = 3 
+						AND "user"."id" NOT IN (SELECT "tl_id" FROM "teams" ) `;
 
 		const result = await client.query(query);
 
@@ -227,10 +232,15 @@ class User {
 
 
 		// query for getting all users whose role is developer
-		const query = ` SELECT * FROM "user" 
-							INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
-							WHERE "user_role"."role_id" = 2 
-							AND "user"."id" NOT IN (SELECT "user_id" FROM "team_user" ) `;
+		const query = ` SELECT 
+							"user"."id",
+							"user"."userName" , 
+							"user"."email" , 
+							"user"."contact"
+						FROM "user" 
+						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
+						WHERE "user_role"."role_id" = 2 
+						AND "user"."id" NOT IN (SELECT "user_id" FROM "team_user" ) `;
 
 		const result = await client.query(query);
 		

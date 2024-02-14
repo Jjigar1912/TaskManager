@@ -18,4 +18,7 @@ router.put('/update/:id',UserController.updateUser);
 router.get('/get/tl',UserController.getAllTeamLead);
 
 router.get('/get/developer',UserController.getAllDeveloper);
+
+router.post('/logout',UserController.logoutUser);
+
 export default router ; 

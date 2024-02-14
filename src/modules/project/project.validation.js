@@ -6,8 +6,7 @@ const projectSchema = Joi.object({
 	status : Joi.string().valid('Pending','In Progress','Completed','Hold').required() , 
 	start_date : Joi.date().required() , 
 	expected_end_date : Joi.date().required() , 
-	team_id : Joi.string().required() , 
-	admin_id : Joi.string().required()
+	team_id : Joi.string().required() 
 });
 
 export { 

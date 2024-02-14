@@ -102,8 +102,7 @@ const validateUser = (roles)=>async (req,res,next)=>{
 				const response = {
 					
 					status : HTTP_RESPONSES.UNAUTHORIZED.statusCode , 
-					message : HTTP_RESPONSES.UNAUTHORIZED.message , 
-					info : 'JWT TOKEN expired.'
+					message : 'JWT TOKEN expired.'			
 
 				}; 
 
@@ -116,8 +115,7 @@ const validateUser = (roles)=>async (req,res,next)=>{
 
 		const response = {
 			status : HTTP_RESPONSES.UNAUTHORIZED.statusCode , 
-			message : HTTP_RESPONSES.UNAUTHORIZED.message , 
-			details : 'You are not authorized.'
+			message : 'You are not authorized.'  
 		};
 
 		return res.status(HTTP_RESPONSES.UNAUTHORIZED.statusCode).json(response);
@@ -130,6 +128,10 @@ const storeAdminId = async (req,res,next)=>{
 
 		try{
 
+			console.log(req.cookies.token);
+
+			console.log(envConfig.JWT_KEY);
+
 			const data = await jwt.verify(req.cookies.token,envConfig.JWT_KEY);
 
 			req.body.userId = data.id ; 
@@ -138,14 +140,14 @@ const storeAdminId = async (req,res,next)=>{
 
 		}catch(error){
 
+			console.log(error);
 			if(error instanceof jwt.TokenExpiredError){
 
 				const response = {
 					
 					status : HTTP_RESPONSES.UNAUTHORIZED.statusCode , 
-					message : HTTP_RESPONSES.UNAUTHORIZED.message , 
-					info : 'JWT TOKEN expired.'
-
+					message : 'JWT TOKEN expired.' 
+				
 				}; 
 
 				return res.status(HTTP_RESPONSES.UNAUTHORIZED.statusCode).json(response);
@@ -157,8 +159,8 @@ const storeAdminId = async (req,res,next)=>{
 
 		const response = {
 			status : HTTP_RESPONSES.UNAUTHORIZED.statusCode , 
-			message : HTTP_RESPONSES.UNAUTHORIZED.message , 
-			details : 'You are not authorized.'
+			message : 'You are not authorized.'
+			
 		};
 
 		return res.status(HTTP_RESPONSES.UNAUTHORIZED.statusCode).json(response);

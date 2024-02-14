@@ -19,9 +19,8 @@ class TeamService
 			const response = {
 
 				status : HTTP_RESPONSES.CREATED.statusCode , 
-				message : HTTP_RESPONSES.CREATED.message  ,
-				data : 'Team Created Successfully.' , 
-				teamDetails : result  
+				message : 'Team Created Successfully.' ,
+				data :  result.id 
                 
 			};
 
@@ -46,15 +45,15 @@ class TeamService
 		try{
 
 			await Team.deleteTeamUser(client,team_id);
-
-			const result = await Team.deleteTeam(client,team_id);
+			
+			await Team.deleteTeam(client,team_id);
 
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Team deleted Successfully.' , 
-				deletedTeam : result 
+				message : 'Team deleted Successfully.', 
+			
 			};
+
 			return response ; 
 
 		}catch(e){
@@ -80,9 +79,8 @@ class TeamService
 
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Team got successfully.' , 
-				teamDetails : result 
+				message : 'Team got successfully.' , 
+				data : result 
 			}; 
 
 			return response ; 

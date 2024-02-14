@@ -6,13 +6,9 @@ class TeamController
 
 	async addTeam(req,res){
 
-		console.log('called');
-
 		try{
 
 			const result = await TeamService.addTeam(req.body);
-
-			console.log(result);
 
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(result) ; 
 
@@ -23,9 +19,8 @@ class TeamController
 				const response = {
 
 					status :  HTTP_RESPONSES.CONFLICT.statusCode , 
-					message : HTTP_RESPONSES.CONFLICT.message , 
-					error : e.detail 
-
+					message : e.detail , 
+		
 				};
 				return res.status(HTTP_RESPONSES.CONFLICT.statusCode).json(response);
 			}

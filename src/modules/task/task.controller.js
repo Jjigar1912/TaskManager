@@ -38,6 +38,50 @@ class TaskController
 		}
 	}
 
+
+	static async updateTask(req,res){
+
+		try{
+			const response = await TaskService.updateTask(req.params.id,req.body);
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+		}catch(e){
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+		}
+	}
+
+
+	static async displayUserSpecificTask(req,res){
+
+		try{
+			const response = await TaskService.displayUserSpecificTask(req.params.userId);
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+		}catch(e){
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+		}
+	}
+
+
+	static async displayProjectSpecificUserTask(req,res){
+
+		try{
+			const response = await TaskService.displayProjectSpecificUserTask(req.params.projectId,req.params.userId);
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+		}catch(e){
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+		}
+	}
+
+
+	static async displayTaskOfProject(req,res){
+
+		try{
+			const response = await TaskService.displayTaskOfProject(req.params.projectId);
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+		}catch(e){	
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+		}
+	}
+
 }
 
 export default TaskController ;

@@ -65,13 +65,15 @@ class UserController
 			// return data stored in response which contains status , userdetails 
 			const response = await UserService.loginService(req.body.email,req.body.password);
             
-			res.cookie('token',response.userDetails.access_token, { maxAge: 60 * 60 * 1000 , httpOnly: true });
+			res.cookie('token',response.data, { maxAge: 60 * 60 * 1000 , httpOnly: true });
   
 			// sends success if it is valid user 
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 	
 		}catch(e){
               
+			console.log(e);
+
 			if(e.status == 401) {
                 
 				// send status code 401 if user is unauthorized . 
@@ -223,6 +225,30 @@ class UserController
 
 	}
 
+
+	static async logoutUser(req,res){
+
+		try{
+
+			if(res.cookie.token){
+				
+				res.clearCookie('token');
+
+			}
+	
+			const response = {
+				status : HTTP_RESPONSES.SUCCESS.statusCode , 
+				message : 'User is logged out successfully.'  
+			};
+
+			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+
+		}catch(error){
+
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+
+		}
+	}
 
 }
 

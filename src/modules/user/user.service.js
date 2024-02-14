@@ -41,8 +41,8 @@ class UserService {
 				const response = {
 
 					status : HTTP_RESPONSES.CREATED.statusCode , 
-					message : HTTP_RESPONSES.CREATED.message , 
-					userDetails : result
+					message : 'User registered successfully.' , 
+					data : result.id
 				};
 
 				console.log(response);
@@ -54,9 +54,7 @@ class UserService {
 				const response = {
 	
 					status: HTTP_RESPONSES.CONFLICT.statusCode,
-					message: HTTP_RESPONSES.CONFLICT.message,
-					data: 'Email Id is already exists.'
-	
+					message: 'Email Id is already exists.',
 				};
 	
 				throw response;
@@ -102,14 +100,15 @@ class UserService {
 
 					const access_token = await jwt.sign(remaining,envConfig.JWT_KEY,{ expiresIn : '1h'});
 
+					console.log(access_token);
+
 					Object.assign(remaining,{access_token});
 
 					const response = {
 						
 						status : HTTP_RESPONSES.SUCCESS.statusCode , 
-						message : HTTP_RESPONSES.SUCCESS.message , 
-						data : 'Login Successfull',
-						userDetails : remaining  
+						message : 'Login Successfull' , 
+						data : access_token 
 
 					};
 					
@@ -120,8 +119,7 @@ class UserService {
 					const response = {
 						
 						status : HTTP_RESPONSES.UNAUTHORIZED.statusCode , 
-						message : HTTP_RESPONSES.UNAUTHORIZED.message , 
-						data : 'Invalid Password'
+						message : 'Invalid Password' 
 
 					};
 
@@ -134,9 +132,7 @@ class UserService {
 				const response = {
 					
 					status : HTTP_RESPONSES.NOT_FOUND.statusCode , 
-					message : HTTP_RESPONSES.NOT_FOUND.message , 
-					data : 'User Not Found .' 
-
+					message : 'User Not Found .' , 
 				};
 
 				throw response ; 
@@ -178,9 +174,8 @@ class UserService {
 				response = {
 
 					status : HTTP_RESPONSES.SUCCESS.statusCode , 
-					message : HTTP_RESPONSES.SUCCESS.message , 
-					data : 'UserDetails got successfully.' , 
-					userDetails : data 
+					message : 'UserDetails got successfully.' , 
+					data  
 
 				};
 
@@ -191,10 +186,9 @@ class UserService {
 				response = {
 
 					status : HTTP_RESPONSES.SUCCESS.statusCode , 
-					message : HTTP_RESPONSES.SUCCESS.message , 
-					data : 'UserDetails got successfully.' , 
-					userDetails : data 
-
+					message : 'UserDetails got successfully.' , 
+					data  
+					
 				};
 
 			}
@@ -242,9 +236,7 @@ class UserService {
 			const response = {
 
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				data : 'User Deleted Successfully' , 
-				deletedUser : data1 
+				message : 'User Deleted Successfully' , 		
 
 			};
 
@@ -294,9 +286,8 @@ class UserService {
 			const response = {
 
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				data : 'User Updated Successfully.' , 
-				updateRecord : data1 
+				message : 'User Updated Successfully.'  
+
 			}; 
 
 			return response ; 
@@ -337,9 +328,8 @@ class UserService {
 			const response = {
 
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				data : 'TL Details get successfully.' ,
-				tldetails : result 
+				message : 'TL Details get successfully.'  , 
+				data : result
 			};
 			
 			return response ; 
@@ -372,9 +362,9 @@ class UserService {
 			const response = {
 
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Developer details got successfully.', 
-				developerDetails : result  
+				message : 'Developer details got successfully.', 
+				data : result  
+				
 			} ; 
 
 			return response ; 
