@@ -10,7 +10,7 @@ class TeamController
 
 			const result = await TeamService.addTeam(req.body);
 
-			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(result) ; 
+			return res.status(result.status).json(result) ; 
 
 		}catch(e){
 
@@ -34,7 +34,7 @@ class TeamController
 	async deleteTeam(req,res){
 
 		try{
-			const result = await TeamService.deleteTeam(req.params.id);
+			const result = await TeamService.deleteTeam(req.params.teamId);
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(result);
 		}catch(e){
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);

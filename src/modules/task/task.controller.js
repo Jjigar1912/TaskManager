@@ -9,6 +9,7 @@ class TaskController
 			const response = await TaskService.createTask(req.params.id,req.body);
 			return res.status(HTTP_RESPONSES.CREATED.statusCode).json(response);
 		}catch(e){
+			console.log(e);
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		}
 	
@@ -31,7 +32,7 @@ class TaskController
 	static async deleteTask(req,res){
 
 		try{
-			const response = await TaskService.deleteTask(req.params.id);
+			const response = await TaskService.deleteTask(req.params.id,req.body.admin_id);
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 		}catch(e){
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
@@ -81,6 +82,8 @@ class TaskController
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		}
 	}
+
+
 
 }
 

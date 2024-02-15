@@ -3,6 +3,7 @@ class Project{
 
 	static async addProject(client,projectDetails){
 		try{
+
 			const code = 'ZTI-' + Date.now().toString() ;   
 			projectDetails['project_code'] = code ; 
 			console.log(projectDetails);
@@ -19,6 +20,25 @@ class Project{
 		}catch(e){
 			throw e ;
 		}
+	}
+
+
+
+	static async checkExistProject(client,projectName){
+
+		const query1 = 'SELECT * FROM "project" WHERE "title" = $1 ' ; 
+
+		const result1 = await client.query(query1,[projectName]);
+
+		if(result1.rows.length == 0 ){
+			return false ; 
+		}
+
+		const query2 = 'SELECT * FROM "project" WHERE "title" = $1 AND "is_deleted" = $2' ; 
+
+		const result2 = await client.query(query2,[projectName,false]);
+
+		return result2.rows.length > 0 ?  true : false ; 
 	}
 
 
@@ -59,6 +79,7 @@ class Project{
 
 
 	static async delete(client,projectId){
+
 		try{
 
 			const query = 'UPDATE "project" SET "is_deleted" = $1 WHERE "id" = $2 RETURNING *';

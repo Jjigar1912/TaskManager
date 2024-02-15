@@ -18,6 +18,33 @@ class Team{
 
 	}
 
+	static async checkExistsTeam(client,teamName){
+		
+		try{
+
+			const query1 = 'SELECT * FROM "teams" WHERE "name" = $1 ' ; 
+
+			const result1 = await client.query(query1,[teamName]);
+
+			if(result1.rows.length == 0 ){
+				
+				return true ;
+			
+			}
+
+			const query = 'SELECT * FROM "teams" WHERE "name" = $1 AND "is_deleted" = $2 ';
+
+			const result = await client.query(query,[teamName,true]);
+
+			return result.rows.length > 0 ? true : false ;
+
+		}catch(e){
+
+			throw e ; 
+
+		}
+	}
+
 	static async addTeamUser(client,users,team_id){
 
 		const users_id = [] ;
@@ -48,9 +75,9 @@ class Team{
 
 		try{
 
-			const query = 'DELETE FROM team_user WHERE team_id = $1 RETURNING *';
+			const query = 'UPDATE "team_user" SET "is_deleted" = $1 WHERE team_id = $2 RETURNING *';
 
-			const result = await client.query(query,[team_id]);
+			const result = await client.query(query,[true,team_id]);
 
 			return result.rows[0] ; 
 
@@ -66,9 +93,9 @@ class Team{
 
 		try{
 
-			const query = 'DELETE FROM teams WHERE id = $1 RETURNING *';
+			const query = 'UPDATE "teams" SET "is_deleted"  = $1 WHERE id = $2 RETURNING *';
 
-			const result = await client.query(query,[team_id]);
+			const result = await client.query(query,[true,team_id]);
 
 			return result.rows[0] ; 
 
@@ -87,21 +114,21 @@ class Team{
 
 			const query = `
                 SELECT 
-					"teams"."id" AS "TeamId",
-                    "teams"."name" AS "TeamName" ,
+					"teams"."id" AS "teamId",
+                    "teams"."name" AS "teamName" ,
                     "tl_users"."userName" AS "TL", 
-                    "admin_users"."userName" as "Created By" , 
-                    "Counter"."COUNT" AS "Team Member" 
+                    "admin_users"."userName" as "createdBy" , 
+					COALESCE("Counter"."COUNT", 0) AS "teamMemberCount" 
                 FROM "teams"
                 INNER JOIN "user" as "tl_users" ON "teams"."tl_id" = "tl_users"."id"
                 INNER JOIN "user" as "admin_users" on "teams"."created_by" = "admin_users"."id" 
-                INNER JOIN ( SELECT 
+                LEFT JOIN ( SELECT 
                                 "team_id" , 
                                 COUNT(*) as "COUNT"  
                             FROM "team_user" 
-                            Group by "team_id" ) AS "Counter" ON "Counter"."team_id" = "teams"."id" `;
+                            Group by "team_id" ) AS "Counter" ON "Counter"."team_id" = "teams"."id" WHERE "teams"."is_deleted" = $1 `;
 
-			const result = await client.query(query);
+			const result = await client.query(query,[false]);
 
 			return result.rows ; 
 
@@ -117,20 +144,20 @@ class Team{
 		try{
 			const query = `
 				SELECT 
-					"team_user"."id",
+					"user"."id",
 					"user"."userName" , 
 					"user"."email" , 
 					"user"."contact" 
 				FROM "team_user" 
 				INNER JOIN "user" ON "team_user"."user_id" = "user"."id"
-				WHERE "team_user"."team_id" = $1`;
+				WHERE "team_user"."team_id" = $1 AND "team_user"."is_deleted" = $2`;
 
-			const result = await client.query(query,[teamId]);
+			const result = await client.query(query,[teamId,false]);
 
 			return result.rows ; 
 		
 		}catch(e){
-
+			console.log(e);
 			throw e ; 
 		
 		}
@@ -141,8 +168,8 @@ class Team{
 
 		try{
 			
-			const query = 'DELETE FROM "team_user" WHERE "team_user"."id" = $1 RETURNING *';
-			const result = await client.query(query,[memberId]);
+			const query = 'UPDATE "team_user" SET "is_deleted" = $1 WHERE "team_user"."id" = $2 RETURNING *';
+			const result = await client.query(query,[memberId,true]);
 			return result.rows[0];
 
 		}catch(e){

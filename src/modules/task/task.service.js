@@ -12,11 +12,12 @@ class TaskService
             
 			const result = await Task.createTask(client,projectId,task);
 
+			await Task.CreateTaskLog(client,result,task.admin_id);
+
 			const response = {
 				status : HTTP_RESPONSES.CREATED.statusCode , 
-				message : HTTP_RESPONSES.CREATED.message , 
-				details : 'Task created successfully.' , 
-				taskDetails : result 
+				message : 'Task created successfully.' , 
+				data : result.id 
 			};
 			return response ; 
 
@@ -41,8 +42,8 @@ class TaskService
 
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				taskDetails : result 
+				message : 'Task details got successfully.' , 
+				data : result 
 			};
 
 			return response  ; 
@@ -61,20 +62,21 @@ class TaskService
 
 
 
-	static async deleteTask(taskId){
+	static async deleteTask(taskId,userId){
 
 		const client = await pool.connect(); 
 
 		try{
             
-			const result = await Task.deleteTask(client,taskId);
+			await Task.deleteTask(client,taskId);
+
+			await Task.deleteTaskLog(client,taskId,userId);
 
 			const response = {
 
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'TASK DELETED SUCCESSFULLY.' , 
-				deletedTask : result 
+				message : 'TASK DELETED SUCCESSFULLY.' 
+
 			};
 
 			return response ; 
@@ -93,18 +95,18 @@ class TaskService
 
 		try{
 
-			const result = await Task.updateTask(client,taskId,taskDetails);
+
+			await Task.updateTask(client,taskId,taskDetails);
 
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Task Updated successfully.' , 
-				updatedTask : result
+				message : 'Task Updated successfully.' 
 			};
 
 			return response ;
 
 		}catch(error){
+			console.log(error);
 			throw error ; 
 		}finally{
 			client.release();
@@ -122,7 +124,7 @@ class TaskService
 			const projectNames = new Set() ; 
 
 			for(let i = 0 ; i < result.length ; i++){
-				projectNames.add(result[i]['Project Details']['project_title']);
+				projectNames.add(result[i]['projectDetails']['project_code']);
 			}
 
 			const convertedToArray = Array.from(projectNames);
@@ -139,13 +141,12 @@ class TaskService
 					let values = Object.values(result[j]);
 					const obj = {} ;
 				
-					if(convertedToArray[i]===result[j]['Project Details']['project_title']){
+					if(convertedToArray[i]===result[j]['projectDetails']['project_code']){
 
 						for(let k = 0 ; k < keys.length ; k++ ){
 						
-							if(keys[k]!=='Project Details'){
-								obj[`${keys[k]}`] = values[k];
-							}
+							obj[`${keys[k]}`] = values[k];
+						
 					
 						}
 						
@@ -161,9 +162,8 @@ class TaskService
 
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'User Specific Task Got successfully.' , 
-				Task : allTaskWithProjectTitle
+				message : 'User Specific Task Got successfully.', 
+				data : allTaskWithProjectTitle
 			};
 
 			return response ;
@@ -188,9 +188,8 @@ class TaskService
 			const response = {
 
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message ,
-				details : 'Task got successfully' , 
-				taskDetails : result 
+				message : 'Task got successfully' ,
+				data : result
 			};
 
 			return response ; 
@@ -211,9 +210,8 @@ class TaskService
 			const result = await Task.displayTaskOfProject(client,projectId);
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				detail : 'Task details got successfully' , 
-				taskDetails : result 
+				message : 'Task details got successfully', 
+				data :  result 
 			};
 			return response ;
 		}catch(e){
@@ -222,6 +220,7 @@ class TaskService
 			client.release();
 		}
 	}
+
 	
 	
 }

@@ -10,23 +10,42 @@ class TeamService
 
 		try{
 
-			const result = await Team.addTeam(client,teamDetails);
+			const answer = await Team.checkExistsTeam(client,teamDetails.name);
 
-			const user = await Team.addTeamUser(client,teamDetails.user_id,result.id);
+			console.log(answer);
 
-			Object.assign(result,{ teamMembers : user });
+			if(answer){
 
-			const response = {
+				const result = await Team.addTeam(client,teamDetails);
 
-				status : HTTP_RESPONSES.CREATED.statusCode , 
-				message : 'Team Created Successfully.' ,
-				data :  result.id 
+				const user = await Team.addTeamUser(client,teamDetails.user_id,result.id);
+
+				Object.assign(result,{ teamMembers : user });
+
+				const response = {
+
+					status : HTTP_RESPONSES.CREATED.statusCode , 
+					message : 'Team Created Successfully.' ,
+					data :  result.id 
                 
-			};
+				};
 
-			return response ; 
+				return response ; 
 
+			}else{
+
+				const response = {
+
+					status : HTTP_RESPONSES.CONFLICT.statusCode , 
+					message : `${teamDetails.name} already exists.`
+				};
+
+				return response ; 
+			}
+			
 		}catch(e){
+
+			console.log(e);
 
 			throw e ;
 
@@ -100,7 +119,12 @@ class TeamService
 
 		try{
 			const result = await Team.displayTeamMember(client,teamId);
-			return result ;
+			const response = {
+				status : HTTP_RESPONSES.SUCCESS.statusCode , 
+				message : 'Team member details got successfully' , 
+				data : result
+			};
+			return response ;
 		}catch(e){
 			throw e ; 
 		}finally{
@@ -116,9 +140,8 @@ class TeamService
 			const result = await Team.addTeamUser(client,data.users,data.team_id);
 			const response = {
 				status : HTTP_RESPONSES.CREATED.statusCode , 
-				message : HTTP_RESPONSES.CREATED.message , 
-				details : 'Member added successfully.' , 
-				newMember : result  
+				message : 'Member added successfully.' , 
+				data : result 
 			};
 			return response ; 
 		}catch(e){
@@ -136,8 +159,7 @@ class TeamService
 			await Team.deleteTeamMember(client,memberId);
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Team Member Deleted Successfully.'
+				message : 'Team Member Deleted Successfully.' 
 			};
 			return response ; 
 		}catch(e){

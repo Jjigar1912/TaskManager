@@ -1,6 +1,7 @@
 import UserService from './user.service.js';
 import { HTTP_RESPONSES } from '../../../constants/constant.js';
 
+
 /**
  * 
  * @typedef { Object } response 
@@ -191,17 +192,27 @@ class UserController
 	}
 
 	
-	
+	/**
+	 * 
+	 * @static 
+	 * @async 
+	 * @description This is used to get all team lead whose is not part of the team . 
+	 * @param {object} req represent express request object 
+	 * @param {object} res represent express response object 
+	 * @returns 
+	 */
 	static async getAllTeamLead(req,res){
 		
 		try{
 
 			const response = await UserService.getTL();
 
+			// sending 200 code . 
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 
 		}catch(e){
 
+			// sending 500 code if there is any server related error . 
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		
 		}
@@ -209,43 +220,63 @@ class UserController
 	}
 
 
+	/**
+	 * 
+	 * @description This is used to get developer whose is not in any of the team . 
+	 * @param {object} req REPRESENT EXPRESS REQUEST OBJECT
+	 * @param {object} res REPRESENT EXPRESS RESPONSE OBJECT
+	 * @returns 
+	 */
 	static async getAllDeveloper(req,res){
 
 		try{
 
 			const response = await UserService.getDeveloper() ; 
 
+			// sending success code 
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 
 		}catch(e){
 
+			// sending 500 code 
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 
 		}
 
 	}
 
-
+	/**
+	 * 
+	 * @description This is used to logout user 
+	 * @param {Object} req represent express request object 
+	 * @param {Object} res respresent express response object
+	 * @returns 
+	 */
 	static async logoutUser(req,res){
 
 		try{
 
-			if(res.cookie.token){
-				
+			// first checking cookie named token is present or not if present then we remove it .
+			if(req.cookies.token){
+	
+				// clearing cookie named token . 
 				res.clearCookie('token');
 
 			}
-	
+
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
 				message : 'User is logged out successfully.'  
 			};
-
+	
+			
+			// sending 200 code 
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 
 		}catch(error){
 
-			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+			// sending 500 code if there is any server related error 
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(error);
 
 		}
 	}

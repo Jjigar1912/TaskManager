@@ -9,16 +9,35 @@ class ProjectService
 
 		try{
 
-			const result = await Project.addProject(client,projectDetails);
 
-			const response = {
-				status : HTTP_RESPONSES.CREATED.statusCode , 
-				message : HTTP_RESPONSES.CREATED.message , 
-				details : 'Project Created Successfully.' , 
-				projectDetails : result 
-			}; 
+			const answer = await Project.checkExistProject(client,projectDetails.title);
 
-			return response ; 
+			console.log(answer);
+
+			if(!answer){
+			
+				const result = await Project.addProject(client,projectDetails);
+
+				const response = {
+					status : HTTP_RESPONSES.CREATED.statusCode , 
+					message : 'Project Created Successfully.', 
+					data : result.id 
+				}; 
+	
+				return response ; 
+			
+			}else{
+
+				const response = {
+					status : HTTP_RESPONSES.CONFLICT.statusCode , 
+					message : 'Project is already exists.'
+				};
+
+				return response ; 
+
+			}
+
+		
             
 		}catch(e){
 		
@@ -41,9 +60,8 @@ class ProjectService
 
 			const response = {
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Project Details got successfully.' , 
-				projectDetails : result 
+				message : 'Project Details got successfully.' , 
+				data : result
 			};
 
 			return response; 
@@ -62,14 +80,12 @@ class ProjectService
 
 		try{
 
-			const result = await Project.delete(client,projectId);
+			await Project.delete(client,projectId);
 
 			const response = {
 
 				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Project deleted successfully.' , 
-				deletedProject : result 
+				message : 'Project deleted successfully.' 
 			};
 
 			return response; 
@@ -92,13 +108,11 @@ class ProjectService
 
 		try{
 
-			const result = await Project.updateProject(client,projectId,projectData);
+			await Project.updateProject(client,projectId,projectData);
 
 			const response = {
-				status : HTTP_RESPONSES.SUCCESS.statusCode , 
-				message : HTTP_RESPONSES.SUCCESS.message , 
-				details : 'Project Details updated successfully' , 
-				updatedProject : result 
+				status : HTTP_RESPONSES.SUCCESS.statusCode ,
+				message : 'Project Details updated successfully' 
 			};
 
 			return response; 

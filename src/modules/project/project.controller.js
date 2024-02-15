@@ -15,7 +15,7 @@ class ProjectController
 
 		try{
 			const response = await ProjectService.addProject(req.body);
-			return res.status(HTTP_RESPONSES.CREATED.statusCode).json(response);
+			return res.status(response.status).json(response);
 		}catch(e){
 
 			if(e.code == 23505 ){
@@ -23,8 +23,7 @@ class ProjectController
 				const response = {
 
 					status :  HTTP_RESPONSES.CONFLICT.statusCode , 
-					message : HTTP_RESPONSES.CONFLICT.message , 
-					error : e.detail 
+					message : e.detail 
 
 				};
 				
@@ -36,8 +35,7 @@ class ProjectController
 				const response = {
 
 					status : HTTP_RESPONSES.BAD_REQUEST.statusCode , 
-					message : HTTP_RESPONSES.BAD_REQUEST.message , 
-					error : e.detail 
+					message :e.detail 
 
 				};
 

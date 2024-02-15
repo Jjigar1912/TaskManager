@@ -14,4 +14,5 @@ router.get('/project/:projectId/user/:userId',validateUser(['developer','tl','ad
 router.get('/project/:projectId',validateUser(['developer','tl','admin']),TaskController.displayTaskOfProject);
 
 
+
 export default router ; 

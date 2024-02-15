@@ -9,7 +9,6 @@ import allRoutes from './src/modules/index.js';
 import cookieParser from 'cookie-parser';
 
 
-
 // Create an instance of the Express Application . 
 const app = express() ; 
 

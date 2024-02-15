@@ -38,8 +38,8 @@ class User {
 	 * @returns { Object } Returns an object of user specified in email .
 	 */
 	static async getDetailsByEmail(client,email){
-		const query = 'SELECT * FROM "user" WHERE "email" = $1';
-		const result = await client.query(query,[email]);
+		const query = 'SELECT * FROM "user" WHERE "email" = $1 AND "is_deleted" = $2';
+		const result = await client.query(query,[email,false]);
 		return result.rows[0];
 	}
 
@@ -84,7 +84,7 @@ class User {
 
 		let query = null ;
 		let result = null ;
-
+	
 		if(role===null){
 
 			query = `SELECT 
@@ -96,9 +96,9 @@ class User {
 						"userRole"."name" AS "role"
 						FROM "user" 
 						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
-						INNER JOIN "userRole" ON "userRole"."id" = "user_role"."role_id" ORDER BY "userRole"."name" ` ;
+						INNER JOIN "userRole" ON "userRole"."id" = "user_role"."role_id" WHERE "user"."is_deleted" = $1 ORDER BY "userRole"."name" ` ;
 
-			result = await client.query(query);
+			result = await client.query(query,[false]);
 
 		}else{
 
@@ -112,9 +112,9 @@ class User {
 						FROM "user" 
 						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
 						INNER JOIN "userRole" ON "userRole"."id" = "user_role"."role_id" 
-						WHERE "userRole"."name" = $1 ORDER BY "userRole"."name"` ;
+						WHERE "userRole"."name" = $1 AND  "user"."is_deleted" = $2 ORDER BY "userRole"."name"  ` ;
 
-			result = await client.query(query,[role.toUpperCase()]);
+			result = await client.query(query,[role.toUpperCase(),false]);
 
 		}
 
@@ -131,8 +131,8 @@ class User {
 	 */
 	static async deleteUserById(client,id){
 
-		const query = 'DELETE FROM "user" WHERE "id" = $1 RETURNING * ' ;
-		const result = await client.query(query,[id]); 
+		const query = 'UPDATE "user" SET "is_deleted" = $1 WHERE "id" = $2 RETURNING * ' ;
+		const result = await client.query(query,[true,id]); 
 		return result.rows[0] ; 
 		
 	}
@@ -148,8 +148,8 @@ class User {
 	 */
 	static async deleteUserRoleById(client,id){
 
-		const query = 'DELETE FROM "user_role" WHERE "user_id" = $1 RETURNING * ' ; 
-		const result = await client.query(query,[id]);
+		const query = 'UPDATE "user_role" SET "is_deleted" = $1 WHERE "user_id" = $2 RETURNING * ' ; 
+		const result = await client.query(query,[true,id]);
 		return result.rows[0] ; 
 
 	}
@@ -213,10 +213,10 @@ class User {
 							"user"."contact"
 						FROM "user" 
 						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
-						WHERE "user_role"."role_id" = 3 
-						AND "user"."id" NOT IN (SELECT "tl_id" FROM "teams" ) `;
+						WHERE "user_role"."role_id" = $2 
+						AND "user"."id" NOT IN (SELECT "tl_id" FROM "teams" ) AND "user"."is_deleted" = $1 ORDER BY "user"."userName"`;
 
-		const result = await client.query(query);
+		const result = await client.query(query,[false,3]);
 
 		return result.rows ; 
 
@@ -239,10 +239,10 @@ class User {
 							"user"."contact"
 						FROM "user" 
 						INNER JOIN "user_role" ON "user"."id" = "user_role"."user_id" 
-						WHERE "user_role"."role_id" = 2 
-						AND "user"."id" NOT IN (SELECT "user_id" FROM "team_user" ) `;
+						WHERE "user_role"."role_id" = $2 
+						AND "user"."id" NOT IN (SELECT "user_id" FROM "team_user" ) AND "user"."is_deleted" = $1 ORDER BY "user"."userName" `;
 
-		const result = await client.query(query);
+		const result = await client.query(query,[false,2]);
 		
 		return result.rows ; 
 
