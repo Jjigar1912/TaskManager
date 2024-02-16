@@ -6,7 +6,7 @@ class TaskController
 	static async addTask(req,res){
 
 		try{
-			const response = await TaskService.createTask(req.params.id,req.body);
+			const response = await TaskService.createTask(req.params.projectId,req.body);
 			return res.status(HTTP_RESPONSES.CREATED.statusCode).json(response);
 		}catch(e){
 			console.log(e);
@@ -32,7 +32,7 @@ class TaskController
 	static async deleteTask(req,res){
 
 		try{
-			const response = await TaskService.deleteTask(req.params.id,req.body.admin_id);
+			const response = await TaskService.deleteTask(req.params.taskId,req.body.admin_id);
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
 		}catch(e){
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);

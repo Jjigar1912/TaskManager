@@ -55,11 +55,11 @@ class TeamController
 	}
 
 	async displayTeamMember(req,res){
-
 		try{
-			const result = await TeamService.displayTeamMember(req.params.id);
+			const result = await TeamService.displayTeamMember(req.params.teamId);
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(result);
 		}catch(e){
+			console.log(e);
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		}
 	}
@@ -88,7 +88,7 @@ class TeamController
 	async deleteTeamMember(req,res){
 
 		try{
-			const result = await TeamService.deleteTeamMember(req.params.id);
+			const result = await TeamService.deleteTeamMember(req.params.memberId);
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(result);
 		}catch(e){	
 			console.log(e);

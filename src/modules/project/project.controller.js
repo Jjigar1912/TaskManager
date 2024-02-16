@@ -72,7 +72,7 @@ class ProjectController
 
 	async updateProject(req,res){
 		try{
-			const result = await ProjectService.updateProject(req.params.id,req.body);
+			const result = await ProjectService.updateProject(req.params.projectId,req.body);
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(result);
 		}catch(e){
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);

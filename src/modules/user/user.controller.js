@@ -17,6 +17,8 @@ import { HTTP_RESPONSES } from '../../../constants/constant.js';
  */
 class UserController
 {
+
+	
 	/**
      * Registers a new user
      * @async
@@ -69,7 +71,7 @@ class UserController
 			res.cookie('token',response.data, { maxAge: 60 * 60 * 1000 , httpOnly: true });
   
 			// sends success if it is valid user 
-			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(response);
+			return res.status(response.status).json(response);
 	
 		}catch(e){
               
@@ -156,8 +158,13 @@ class UserController
 			
 		}catch(e){
 
+			const response = {
+				status : HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode , 
+				message : e
+			};
+			
 			// sends 500 code if any error occurs . 
-			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(response);
 
 		}
 	}

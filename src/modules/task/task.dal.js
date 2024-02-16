@@ -149,8 +149,8 @@ class Task {
 
 	static async deleteTask(client,taskId){
 		try{
-			const query = 'DELETE FROM "task"  WHERE "id" = $1 RETURNING *' ; 
-			const result = await client.query(query,[taskId]);
+			const query = 'UPDATE "task" SET "is_deleted" = $2  WHERE "id" = $1 RETURNING *' ; 
+			const result = await client.query(query,[taskId,true]);
 			return result.rows[0];
 		}catch(error){
 			throw error ; 
@@ -282,6 +282,7 @@ class Task {
 					"task"."due_date" AS "taskDueDate" , 
 					"task"."completed_date" AS "taskCompletedDate" 	, 
 					"task"."category" as "taskCategory" , 
+					"task"."assigned_at" as "taskAssignedDate",
 				 CASE 
 				 	WHEN "task"."completed_date" > "task"."due_date" THEN 'Yes' 
 					ELSE 'No' 

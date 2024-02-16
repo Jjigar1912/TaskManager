@@ -1,0 +1,19 @@
+{
+    "responseString": {
+        "type": "object",
+        "properties": {
+            "status": {
+                "type": "integer" , 
+                "required" : true
+            } , 
+            "message" : {
+                "type" : "string" , 
+                "required" : true 
+            } , 
+            "data" : {
+                "type" : "string" , 
+                "required" : true
+            }
+        }
+    }
+}

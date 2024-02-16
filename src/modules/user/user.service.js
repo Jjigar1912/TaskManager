@@ -135,7 +135,7 @@ class UserService {
 					message : 'User Not Found .' , 
 				};
 
-				throw response ; 
+				return response ; 
 
 			}
 
