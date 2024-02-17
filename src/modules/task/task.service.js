@@ -68,9 +68,15 @@ class TaskService
 
 		try{
             
-			await Task.deleteTask(client,taskId);
+			const result = await Task.deleteTask(client,taskId);
 
-			await Task.deleteTaskLog(client,taskId,userId);
+			const keys = Object.keys(result);
+
+			for(let i = 0 ; i < keys.length ; i++){
+				
+				await Task.deleteTaskLog(client,taskId,userId,keys[i],result[keys[i]]);
+
+			}	
 
 			const response = {
 

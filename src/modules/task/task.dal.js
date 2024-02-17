@@ -23,15 +23,15 @@ class Task {
 
 
 
-	static async deleteTaskLog(client,tasKId,userId){
+	static async deleteTaskLog(client,tasKId,userId,column,oldValue){
 
 		try{
 
 			console.log(tasKId);
 
-			const query = ' INSERT INTO "TaskActivityLog"("task_id","user_id","column","newValue","type") VALUES($1,$2,$3,$4,$5)';
+			const query = ' INSERT INTO "TaskActivityLog"("task_id","user_id","column","newValue","type","oldValue") VALUES($1,$2,$3,$4,$5,$6)';
 
-			await client.query(query,[tasKId,userId,'ALL','NULL','DELETE']);
+			await client.query(query,[tasKId,userId,column,'NULL','DELETE',oldValue]);
 	
 		}catch(error){
 

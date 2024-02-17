@@ -126,9 +126,9 @@ class Team{
                                 "team_id" , 
                                 COUNT(*) as "COUNT"  
                             FROM "team_user" 
-                            Group by "team_id" ) AS "Counter" ON "Counter"."team_id" = "teams"."id" WHERE "teams"."is_deleted" = $1 `;
+                            Group by "team_id" WHERE "is_deleted" = $2) AS "Counter" ON "Counter"."team_id" = "teams"."id" WHERE "teams"."is_deleted" = $1 `;
 
-			const result = await client.query(query,[false]);
+			const result = await client.query(query,[false,false]);
 
 			return result.rows ; 
 
@@ -169,7 +169,7 @@ class Team{
 		try{
 			
 			const query = 'UPDATE "team_user" SET "is_deleted" = $1 WHERE "team_user"."id" = $2 RETURNING *';
-			const result = await client.query(query,[memberId,true]);
+			const result = await client.query(query,[true,memberId]);
 			return result.rows[0];
 
 		}catch(e){
@@ -178,7 +178,36 @@ class Team{
 
 	}
 
+	static async deleteTeamMemberByUserId(client,memberId){
+
+		try{
+			
+			const query = 'UPDATE "team_user" SET "is_deleted" = $1 WHERE "team_user"."user_id" = $2 RETURNING *';
+			const result = await client.query(query,[true,memberId]);
+			return result.rows[0];
+
+		}catch(e){
+			throw e;
+		}
+
+	}
+
+
 	
+
+	static async getTeamIdFromTeam(client,userId){
+
+		try{
+
+			const query = 'SELECT "id" FROM "teams" WHERE "tl_id" = $1 ' ;
+			const result = await client.query(query,[userId]);
+			return result.rows[0];
+		}catch(e){
+			throw e;
+		}
+	}
+
+
 
 }
 

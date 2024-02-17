@@ -8,6 +8,9 @@ import User from './user.dal.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import envConfig from '../../../env.js';
+import Team from '../teams/team.dal.js';
+import Project from '../project/project.dal.js';
+
 
 
 class UserService {
@@ -100,8 +103,6 @@ class UserService {
 
 					const access_token = await jwt.sign(remaining,envConfig.JWT_KEY,{ expiresIn : '1h'});
 
-					console.log(access_token);
-
 					Object.assign(remaining,{access_token});
 
 					const response = {
@@ -140,8 +141,6 @@ class UserService {
 			}
 
 		}catch(e){
-
-			console.log(e);
 
 			throw e ; 
 
@@ -228,6 +227,16 @@ class UserService {
 
 			// delete user details from user table . 
 			const data2 = await User.deleteUserById(client,id);
+			
+			const role = await User.getRoleName(client,data2.id);
+
+			
+			
+		  if(role.name==='DEVELOPER'){
+				console.log(role);
+				await Team.deleteTeamMemberByUserId(client,data2.id);
+
+			}
 
 			// assigning data2 properties into data1 
 			Object.assign(data1,data2);
@@ -245,6 +254,7 @@ class UserService {
 			
 		}catch(e){
 
+			console.log(e);
 			// thowing an error 
 			throw e ; 
 		

@@ -135,7 +135,7 @@ router.delete('/delete/:taskId',validateUser(['admin','tl']),TaskController.dele
  * @swagger 
  * /task/update/{id}:
  *   put: 
- *     summary: updates a task
+ *     summary: Update a task
  *     tags: 
  *       - Task
  *     produces: 
@@ -153,10 +153,8 @@ router.delete('/delete/:taskId',validateUser(['admin','tl']),TaskController.dele
  *           properties: 
  *             title: 
  *               type: string
- *               required: true 
  *             description: 
  *               type: string 
- *               required: true
  *             task_status: 
  *               type: string
  *               enum: 
@@ -166,24 +164,22 @@ router.delete('/delete/:taskId',validateUser(['admin','tl']),TaskController.dele
  *                 - Done
  *                 - Reopen
  *                 - Hold
- *               required: true 
  *             assigned_at: 
  *               type: string 
- *               required: true 
  *             due_date: 
  *               type: string 
- *               required: true 
  *             completed_date: 
  *               type: string 
- *               required: true 
+ *             project_id: 
+ *               type: string 
  *             assignToId: 
  *               type: string 
- *               required: true 
  *             category: 
  *               type: array
- *               required: true
  *               items: 
  *                 type: string
+ *             is_deleted: 
+ *               type: boolean 
  *     responses: 
  *       '200': 
  *         description: 'Updated Task' 
@@ -218,7 +214,7 @@ router.put('/update/:id',validateUser(['admin','tl']),TaskController.updateTask)
  * @swagger 
  * /task/user/{userId}:
  *   get: 
- *     summary: Display tasks of a specific user
+ *     summary: Displaying task of a specific user
  *     tags: 
  *       - Task
  *     parameters: 

@@ -19,7 +19,7 @@ dotenv.config();
  */
 const envConfig = { 
 	DATABASE_URL : process.env.DATABASE_URL , 
-	PORT : process.env.PORT || 4000 , 
+	PORT : process.env.PORT || 4005 , 
 	DATABASE_NAME : process.env.DATABASE_NAME , 
 	DATABASE_HOST : process.env.DATABASE_HOST , 
 	DATABASE_PASSWORD : process.env.DATABASE_PASSWORD , 

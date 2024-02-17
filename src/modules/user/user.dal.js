@@ -136,7 +136,7 @@ class User {
 		return result.rows[0] ; 
 		
 	}
-
+	
 
 	/**
 	 * 
@@ -148,8 +148,10 @@ class User {
 	 */
 	static async deleteUserRoleById(client,id){
 
+		console.log(id);
 		const query = 'UPDATE "user_role" SET "is_deleted" = $1 WHERE "user_id" = $2 RETURNING * ' ; 
 		const result = await client.query(query,[true,id]);
+		console.log(result.rows[0]);
 		return result.rows[0] ; 
 
 	}

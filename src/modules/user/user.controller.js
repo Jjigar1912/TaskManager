@@ -74,8 +74,6 @@ class UserController
 			return res.status(response.status).json(response);
 	
 		}catch(e){
-              
-			console.log(e);
 
 			if(e.status == 401) {
                 
