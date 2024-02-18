@@ -170,6 +170,66 @@ class TeamService
 	}
 
 
+
+
+	async updateTeam(teamId,teamDetails){
+
+		const client = await pool.connect(); 
+
+		let response = null ; 
+
+		try{
+
+			if(teamDetails.name){
+				
+				const ans = await Team.checkExistsTeam(client,teamDetails.name);
+
+				console.log(ans);
+
+				if(ans){
+					
+					await Team.updateTeam(client,teamId,teamDetails);
+
+				    response = {
+						status : HTTP_RESPONSES.SUCCESS.statusCode , 
+						message : 'Team Updated Successfully.'
+					};
+				
+				}else{
+
+					response = {
+						status : HTTP_RESPONSES.CONFLICT.statusCode , 
+						message : 'Team Name already exists'
+					};
+
+				}
+			
+			}else{
+
+				   await Team.updateTeam(client,teamId,teamDetails);
+
+				   response = {
+					status : HTTP_RESPONSES.SUCCESS.statusCode , 
+					message : 'Team Updated Successfully.'
+				};
+
+			}
+
+		
+
+			return response ;
+
+		}catch(e){	
+
+			console.log(e);
+
+			throw e ; 
+		}finally{
+			client.release();
+		}
+	}
+
+
 	
 
   

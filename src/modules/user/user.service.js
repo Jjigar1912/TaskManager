@@ -9,8 +9,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import envConfig from '../../../env.js';
 import Team from '../teams/team.dal.js';
-import Project from '../project/project.dal.js';
-
 
 
 class UserService {
@@ -95,6 +93,7 @@ class UserService {
 
 				if(passwordMatch){
 
+					// eslint-disable-next-line no-unused-vars
 					const { password , ...remaining } = ans ; 
 
 					const role = await User.getRoleName(client,remaining.id); 

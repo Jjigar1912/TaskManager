@@ -2,17 +2,23 @@ import pool from '../../../config/db-config.js';
 import { HTTP_RESPONSES } from '../../../constants/constant.js';
 import Project from './project.dal.js';
 class ProjectService
-{
+{	
+
+	/**
+	 * 
+	 * @param {Object} projectDetails Represent a new Project Details  
+	 * @returns { Promise }
+	 */
 	static async addProject(projectDetails){
 
+		// Creating an instance of pg database 
 		const client = await pool.connect();
 
 		try{
 
-
+			// Before inserting into the db first we are checking that this project is already exists or not .
+			// If already exists , then returns false 
 			const answer = await Project.checkExistProject(client,projectDetails.title);
-
-			console.log(answer);
 
 			if(!answer){
 			
@@ -36,8 +42,6 @@ class ProjectService
 				return response ; 
 
 			}
-
-		
             
 		}catch(e){
 		
@@ -50,10 +54,16 @@ class ProjectService
 		}
 	}
 
-
+	/**
+	 * 
+	 * This is used to display project
+	 * @returns { Promise }
+	 */
 	static async displayProject(){
 
+		// creating an instance of database 
 		const client = await pool.connect();
+	
 		try{
 
 			const result = await Project.display(client);
@@ -67,19 +77,33 @@ class ProjectService
 			return response; 
 
 		}catch(e){
+
+			// throwing an exception
 			throw e ; 
+		
 		}finally{
+			
+			// releasing the connection
 			client.release();
+		
 		}
+	
 	}
 
-
+	/**
+	 * 
+	 * This is used to delete a project
+	 * @param {uuid} projectId 
+	 * @returns { Promise }
+	 */
 	static async deleteProject(projectId){
 
+		// Creating an instance of postgresql database 
 		const client = await pool.connect();
 
 		try{
 
+			// Used to delete project ( Soft delete )
 			await Project.delete(client,projectId);
 
 			const response = {
@@ -101,7 +125,12 @@ class ProjectService
 		}
 	}
 
-
+	/**
+	 * This is used to update a project
+	 * @param {uuid} projectId 
+	 * @param {Object} projectData 
+	 * @returns 
+	 */
 	static async updateProject(projectId,projectData){
 
 		const client = await pool.connect(); 
@@ -118,10 +147,15 @@ class ProjectService
 			return response; 
 
 		}catch(e){
+	
 			throw e ; 
+	
 		}finally{
+	
 			client.release();
+	
 		}
+	
 	}
 
 	

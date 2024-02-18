@@ -1,7 +1,7 @@
 import express from 'express' ; 
 import teamController from './team.controller.js';
-import { validateSchema , storeAdminId} from '../../providers/schemaValidator.js';
-import { teamSchema , addTeamMember } from './team.validation.js';
+import { validateSchema , storeAdminId, validateUser} from '../../providers/schemaValidator.js';
+import { teamSchema , addTeamMember, updateTeam } from './team.validation.js';
 
 const router = express.Router();
 
@@ -119,6 +119,67 @@ router.post('/add',validateSchema(teamSchema),storeAdminId,teamController.addTea
  */
 router.delete('/delete/:teamId',teamController.deleteTeam);
 
+
+
+
+/**
+ * @swagger
+ *
+ * /team/update/{teamId}:
+ *    put:
+ *      summary: Update a team by id
+ *      parameters:
+ *        - in: path
+ *          name: teamId
+ *          type: string
+ *          required: true
+ *        - in: body
+ *          name: teamDetails
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *            tl_id:
+ *              type: string
+ *      tags:
+ *        - Team
+ *      responses:
+ *        '200':
+ *          description: Team Updated Successfully.
+ *          schema:
+ *            type: object
+ *            properties:
+ *              status:
+ *                type: integer
+ *                required: true
+ *              message:
+ *                type: string
+ *                required: true
+ *        '500':
+ *          description: Internal Server Error
+ *          schema:
+ *            type: object
+ *            properties:
+ *              status:
+ *                type: integer
+ *                required: true
+ *              message:
+ *                type: string
+ *                required: true
+ *        '409':
+ *          description: Conflict While Updating the team
+ *          schema:
+ *            type: object
+ *            properties:
+ *              status:
+ *                type: integer
+ *                required: true
+ *              message:
+ *                type: string
+ *                required: true
+ *           
+ */
+router.put('/update/:teamId',validateSchema(updateTeam),validateUser(['admin','tl']),teamController.updateTeam);
 /**
  * @swagger 
  * /team/view: 

@@ -22,7 +22,7 @@ class Team{
 		
 		try{
 
-			const query1 = 'SELECT * FROM "teams" WHERE "name" = $1 ' ; 
+			const query1 = 'SELECT * FROM "teams" WHERE "name" ILIKE $1 ' ; 
 
 			const result1 = await client.query(query1,[teamName]);
 
@@ -32,7 +32,7 @@ class Team{
 			
 			}
 
-			const query = 'SELECT * FROM "teams" WHERE "name" = $1 AND "is_deleted" = $2 ';
+			const query = 'SELECT * FROM "teams" WHERE "name" ILIKE $1 AND "is_deleted" = $2 ';
 
 			const result = await client.query(query,[teamName,true]);
 
@@ -126,7 +126,8 @@ class Team{
                                 "team_id" , 
                                 COUNT(*) as "COUNT"  
                             FROM "team_user" 
-                            Group by "team_id" WHERE "is_deleted" = $2) AS "Counter" ON "Counter"."team_id" = "teams"."id" WHERE "teams"."is_deleted" = $1 `;
+							WHERE "is_deleted" = $2
+                            Group by "team_id" ) AS "Counter" ON "Counter"."team_id" = "teams"."id" WHERE "teams"."is_deleted" = $1 `;
 
 			const result = await client.query(query,[false,false]);
 
@@ -204,6 +205,30 @@ class Team{
 			return result.rows[0];
 		}catch(e){
 			throw e;
+		}
+	}
+
+
+	
+	static async updateTeam(client,teamId,teamDetails){
+
+		try{
+			
+			const keys = Object.keys(teamDetails);
+			let setParameter = [];
+
+			for(let i = 0 ; i < keys.length ; i++){
+				setParameter.push(`${keys[i]} = ${teamDetails[keys[i]]}`);
+			}
+
+			const query = `UPDATE "teams" SET ${setParameter.join(',')} WHERE "id" = $1`;
+
+			console.log(query);
+
+		}catch(e){
+
+			throw e ;
+		
 		}
 	}
 

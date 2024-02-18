@@ -49,6 +49,7 @@ class TeamController
 			const result = await TeamService.displayTeam();
 			return res.status(HTTP_RESPONSES.SUCCESS.statusCode).json(result);
 		}catch(e){
+			console.log(e);
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		}
 
@@ -94,6 +95,19 @@ class TeamController
 			console.log(e);
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		}
+	}
+
+
+	async updateTeam(req,res){
+
+		try{
+			const result = await TeamService.updateTeam(req.params.teamId,req.body);
+			return res.status(result.status).json(result);
+		}catch(e){	
+			console.log(e);
+			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
+		}
+
 	}
 
 }

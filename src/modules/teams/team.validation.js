@@ -15,4 +15,12 @@ const addTeamMember = Joi.object({
 	
 });
 
-export { teamSchema , addTeamMember } ; 
+
+const updateTeam = Joi.object({
+
+	name: Joi.string().trim() , 
+	tl_id : Joi.string().trim()
+
+});
+
+export { teamSchema , addTeamMember , updateTeam } ; 
