@@ -6,7 +6,7 @@ class Team{
 
 			const query = 'INSERT INTO teams("name","tl_id","created_by") VALUES($1,$2,$3) RETURNING *';
 
-			const result = await client.query(query,[teamDetails.name,teamDetails.tl_id,teamDetails.userId]);
+			const result = await client.query(query,[teamDetails.name,teamDetails.tl_id,teamDetails.admin_id]);
     
 			return result.rows[0] ;
 

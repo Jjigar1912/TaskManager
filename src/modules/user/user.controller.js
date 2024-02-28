@@ -75,6 +75,8 @@ class UserController
 	
 		}catch(e){
 
+			console.log(e);
+			
 			if(e.status == 401) {
                 
 				// send status code 401 if user is unauthorized . 

@@ -13,7 +13,7 @@ class TeamController
 			return res.status(result.status).json(result) ; 
 
 		}catch(e){
-
+			
 			if(e.code == 23505 ){
 				
 				const response = {

@@ -6,6 +6,9 @@ class TeamService
 {
 	async addTeam(teamDetails){
         
+
+		console.log(teamDetails);
+		
 		const client = await pool.connect();
 
 		try{

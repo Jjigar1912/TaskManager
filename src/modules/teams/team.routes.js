@@ -78,7 +78,7 @@ const router = express.Router();
     *               type: string 
     *               required: true
 */
-router.post('/add',validateSchema(teamSchema),storeAdminId,teamController.addTeam);
+router.post('/add',validateSchema(teamSchema),validateUser(['admin']),teamController.addTeam);
 
 /**
  * @swagger 
