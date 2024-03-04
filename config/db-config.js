@@ -1,7 +1,7 @@
-import pg from 'pg' ; 
+import pg from 'pg';
 import envConfig from '../env.js';
-
-const Pool = pg.Pool ; 
+// console.log(envConfig);
+const Pool = pg.Pool;
 
 const pool = new Pool({
 	host: envConfig.DATABASE_HOST,
@@ -10,5 +10,13 @@ const pool = new Pool({
 	port: envConfig.DATABASE_PORT,
 	database: envConfig.DATABASE_NAME
 });
+pool.on('connect', () => {
+	// console.log('conneced');
+});
+pool.on('error', (err) => {
+	// console.log(err);
+});
 
-export default pool ; 
+// console.log(pool);
+
+export default pool; 

@@ -10,7 +10,7 @@ ALTER TABLE "team_user" ADD COLUMN "is_deleted" BOOLEAN DEFAULT false ;
 
 -- migrate:down
 
-ALTER TABLE "user" DROP COLUMN "is_deleted" ;
+ALTER TABLE "user" DROP COLUMN IF EXISTS "is_deleted" ;
 
 ALTER TABLE "user_role" DROP COLUMN "is_deleted" ; 
 

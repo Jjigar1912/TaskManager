@@ -112,7 +112,7 @@ class TaskService
 			return response ;
 
 		}catch(error){
-			console.log(error);
+			// console.log(error);
 			throw error ; 
 		}finally{
 			client.release();

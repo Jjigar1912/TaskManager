@@ -158,7 +158,7 @@ class Team{
 			return result.rows ; 
 		
 		}catch(e){
-			console.log(e);
+			// console.log(e);
 			throw e ; 
 		
 		}
@@ -223,7 +223,7 @@ class Team{
 
 			const query = `UPDATE "teams" SET ${setParameter.join(',')} WHERE "id" = $1`;
 
-			console.log(query);
+			// console.log(query);
 
 		}catch(e){
 

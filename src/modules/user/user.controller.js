@@ -75,7 +75,7 @@ class UserController
 	
 		}catch(e){
 
-			console.log(e);
+			// console.log(e);
 			
 			if(e.status == 401) {
                 

@@ -27,7 +27,7 @@ class Task {
 
 		try{
 
-			console.log(tasKId);
+			// console.log(tasKId);
 
 			const query = ' INSERT INTO "TaskActivityLog"("task_id","user_id","column","newValue","type","oldValue") VALUES($1,$2,$3,$4,$5,$6)';
 
@@ -35,7 +35,7 @@ class Task {
 	
 		}catch(error){
 
-			console.log(error);
+			// console.log(error);
 
 			throw error ;
 	
@@ -109,7 +109,7 @@ class Task {
               
 		}catch(e){
 
-			console.log(e);
+			// console.log(e);
 			throw e ;
 		}
 	}
@@ -140,7 +140,7 @@ class Task {
 
 		}catch(error){
 
-			console.log(error);
+			// console.log(error);
 
 			throw error ; 
 		}
@@ -199,7 +199,7 @@ class Task {
 			return result.rows[0];
 
 		}catch(error){
-			console.log(error);
+			// console.log(error);
 			throw error ;
 		}
 	}

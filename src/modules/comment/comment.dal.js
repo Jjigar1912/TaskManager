@@ -118,7 +118,7 @@ class Comment
 
 		}catch(error){
 
-			console.log(error);
+			// console.log(error);
 
 			throw error ;
 		
@@ -174,7 +174,7 @@ class Comment
 
 		}catch(error){
 
-			console.log(error);
+			// console.log(error);
 			
 			throw error ; 
 

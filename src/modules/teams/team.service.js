@@ -7,7 +7,7 @@ class TeamService
 	async addTeam(teamDetails){
         
 
-		console.log(teamDetails);
+		// console.log(teamDetails);
 		
 		const client = await pool.connect();
 
@@ -15,7 +15,7 @@ class TeamService
 
 			const answer = await Team.checkExistsTeam(client,teamDetails.name);
 
-			console.log(answer);
+			// console.log(answer);
 
 			if(answer){
 
@@ -48,7 +48,7 @@ class TeamService
 			
 		}catch(e){
 
-			console.log(e);
+			// console.log(e);
 
 			throw e ;
 
@@ -187,7 +187,7 @@ class TeamService
 				
 				const ans = await Team.checkExistsTeam(client,teamDetails.name);
 
-				console.log(ans);
+				// console.log(ans);
 
 				if(ans){
 					
@@ -224,7 +224,7 @@ class TeamService
 
 		}catch(e){	
 
-			console.log(e);
+			// console.log(e);
 
 			throw e ; 
 		}finally{

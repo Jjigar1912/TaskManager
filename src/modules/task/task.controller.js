@@ -9,7 +9,7 @@ class TaskController
 			const response = await TaskService.createTask(req.params.projectId,req.body);
 			return res.status(HTTP_RESPONSES.CREATED.statusCode).json(response);
 		}catch(e){
-			console.log(e);
+			// console.log(e);
 			return res.status(HTTP_RESPONSES.INTERNAL_SERVER_ERROR.statusCode).json(e);
 		}
 	
