@@ -65,6 +65,7 @@ class UserController
 	
 		try{
                
+			console.log(req.ip);
 			// return data stored in response which contains status , userdetails 
 			const response = await UserService.loginService(req.body.email,req.body.password);
             
